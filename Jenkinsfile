@@ -4,12 +4,11 @@ pipeline {
     }
 	environment{
 		PROJECT_TITLE = "Astemes LUnit"
-		REPO_URL = "https://github.com/astemes/astemes-lunit"
+		REPO_URL = "https://github.com/astemes/astemes-lunit-cli"
 		AUTHOR = "Anton Sundqvist"
 		INITIAL_RELEASE = 2021
-		LV_PROJECT_PATH = "source\\LUnit Framework.lvproj"
-		LV_BUILD_SPEC = "LUnit"
-		LV_VIPB_PATH = "source\\LUnit.vipb"
+		LV_PROJECT_PATH = "source\\LUnit cli.lvproj"
+		LV_BUILD_SPEC = "LUnitCLI"
 		LV_CLI_VIPB_PATH = "source\\LUnit CLI.vipb"
 		LV_VERSION = "20.0"
 	}
@@ -52,11 +51,9 @@ pipeline {
 			}
 			steps{
 				//Build VIPM package
-				script{VIP_FILE_PATH = buildVIPackage "${LV_VIPB_PATH}", "${LV_VERSION}", "${COMMIT_TAG}"}
 				script{CLI_VIP_FILE_PATH = buildVIPackage "${LV_CLI_VIPB_PATH}", "${LV_VERSION}", "${COMMIT_TAG}"}
 				deployGithubPages()
-				deployGithubRelease "${REPO_URL}", "${COMMIT_TAG}", "${VIP_FILE_PATH}"
-				addFileToGithubRelease "${REPO_URL}", "${COMMIT_TAG}", "${CLI_VIP_FILE_PATH}"
+				deployGithubRelease "${REPO_URL}", "${COMMIT_TAG}", "${CLI_VIP_FILE_PATH}"
 			}
 		}
 	}
