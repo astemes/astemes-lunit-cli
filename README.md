@@ -1,95 +1,87 @@
-# LUnit
-[![Image](https://www.vipm.io/package/astemes_lib_lunit/badge.svg?metric=installs)](https://www.vipm.io/package/astemes_lib_lunit/) [![Image](https://www.vipm.io/package/astemes_lib_lunit/badge.svg?metric=stars)](https://www.vipm.io/package/astemes_lib_lunit/)
+# LUnit CLI
 
-A LabVIEW Unit Testing Framework built on the [xUnit](https://en.wikipedia.org/wiki/XUnit) unit testing industry standard and inspired by [JKI VI Tester](https://github.com/JKISoftware/JKI-VI-Tester).
-LUnit helps you test drive your LabVIEW development and provides the following key features.
+LUnit was designed to easily and natively integrate into continuous integration (CI) pipelines.
+To achieve this, a way of executing tests from the command line is needed and the results need to be available in a format which may be digested by the CI system.
 
-- Fast test execution\*
-- Clear and informative results view
-- Run specific tests quickly from right-click menu
-- Test results visible directly in LabVIEW project
-- Instant loading of UI
-- Parallel test execution managed by framework
-- Dynamic test methods for testing of class hierarchies
-- Profiling tools for test execution time and code coverage
-- Native CLI and support for CI
-- LabVIEW API
+## Executing Tests from the Command Line
 
-Full documentation available on [https://lunit.astemes.com](https://lunit.astemes.com/).
+The command line interface (CLI) has been migrated out of the main LUnit project.
+The reason for this is that the CLI is installed on the system level and requires to be installed as administrator.
+To install the native CLI, please use [this package](https://www.vipm.io/package/astemes_lib_lunit_cli/). 
+There is also a G-CLI package, maintained by Sam at SAS Workshops, which can be found [here](https://www.vipm.io/package/sas_workshops_lib_lunit_for_g_cli/) (please note that this document does not apply the G-CLI).
 
-\*Test execution speed is really best-in-class. 
-Below is a comparison between LUnit and two other popular unit testing toolkits\*\*.
-The benchmark is available [here](https://github.com/Astemes/astemes-lunit/tree/main/sandbox/Benchmark) and consists of 160 tests in 20 test case classes.
-The times reported are averages over 5 runs started by the `Run All` feature of each framework.
-As the tests themselves are empty, the benchmark measures only the overhead added by the framework.
+LUnit installs a command line operation using the LabVIEW native [LabVIEWCLI by NI](https://zone.ni.com/reference/en-XX/help/371361R-01/lvhowto/cli_running_operations/).
+This operation is named LUnit and may be called using LabVIEWCLI -OperationName LUnit.
+An example illustrating the usage of the CLI i provided at `...\LabVIEW 20XX\examples\Astemes\LUnit\LUnit CLI Demo.vi`.
+A path to load tests from is provided using the -ProjectPath argument and the report directory is specified using the -ReportPath argument.
 
-<img src="https://raw.githubusercontent.com/Astemes/astemes-lunit/main/docs/10_Basics/img/Benchmark.png" alt="Benchmark"  width="400"/>
+When executing tests from the command line, the test case index is cleared and re-created by default each time.
+This ensures that all inherited test methods are detected*, at the expense of some overhead for test discovery.
+The `-ClearIndex` flag may be used to override this behavior and re-use the index to improve the execution time.
 
-\*\* The numbers are results from two test environment and you will get different results with other setups.
-The conclusion is that LUnit is somewhere in the range of 2x-10x faster than other available tools.
-If you find significantly differing results, please get in touch.
-As of version 1.6 of LUnit the performance was further improved by more than 2x when running tests in parallell, which is not shown in numbers above.
+|Argument|Description
+|---|---|
+|<nobr>`-ProjectPath`</nobr>|The project containing the tests to be executed. The interface also accepts libraries or test case classes of types .lvlib or .lvclass.|
+|<nobr>`-TestRunners`</nobr>|Specifies the number of parallel test runners to spawn. Default value is 1.|
+|<nobr>`-ReportPath`</nobr>|The output path for the report file generated. The execution generates either a .txt-file or an .xml-file, based on the path specified.|
+|<nobr>`-ClearIndex`</nobr>|Clear the index and force LUnit to rediscover all tests. Default is ``True``. The index must be cleared to find new tests inherited for a Test Case. |
 
-## Prerequisites
+The LabVIEW CLI uses VI Server and by default it is configured to work on port 3363.
+You will need to make sure that the connection is not blocked by firewalls.
 
-To use LUnit you will need to have LabVIEW 2020 32-bit, LabVIEW 2020 64-bit SP1, or any later version of LabVIEW installed.
-Please note that for 64-bit LabVIEW, version LabVIEW 2020 SP1 or later is required to work as expected.
-As LUnit was developed using the LabVIEW Community Edition there is currently no support for older versions of LabVIEW.
-Operation system requirements are Windows 10 (version 1909)/8.1 Update 12/7 SP13, Windows Server 2016, Windows Server 2012 R22, or Windows Server 2008 R2 SP13.
+## Capturing the Test Results
 
-## Installation
+Test results are saved in a text based format at the location specified when executing the command line operation.
 
-LUnit is easiest installed using [VI Package Manager](https://www.vipm.io/package/astemes_lib_lunit/)(VIPM).
-New releases are published to VIPM regularly, but lags behind the latest stable version published at [https://github.com/astemes/astemes-lunit/releases/](https://github.com/astemes/astemes-lunit/releases/).
-The release contains a VIPM package which is installed using VIPM.
+LUnit has a built in xml-format for test reports which is using the same structure as the one used by JUnit testing framework and specified [here](https://llg.cubic.org/docs/junit/).
+To use the JUnit xml format, you must provide a file path with the `.xml` extension.
+Once the tests have finished, the result file is available at the specified path.
+File may now be digested by most CI tools.
+For Jenkins this is done using the [JUnit plugin](https://plugins.jenkins.io/junit/).
 
-## Using LUnit
+## Jenkins Example
 
-Once installed, LUnit is integrated into the LabVIEW development environment and the functionality is accessed through the Tools->LUnit menu.
-From the menu, you may create a new tests or open the LUnit UI to run tests.
+Jenkins is a popular open source automation server used for continuous integration and delivery pipelines.
+A pipeline in Jenkins may be configured using a declarative Jenkinsfile which may be saved directly in the repository.
+Below is an example showing a basic configuration.
 
-When you have created a Test Case class, you can create new test VI:s using the provided template or by creating static or dynamic dispatch VI:s on the Test Case class.
-Static dispatch is recommended, unless you are using the test inheritance feature, as they have less overhead and does not lock the Test Case classes when the UI is loaded.
+```java
+pipeline {
+	agent any
+	environment{
+		LV_PROJECT_PATH = "Path to Your LabVIEW Project.lvproj"
+        NUM_TEST_RUNNERS = "1"
+        LV_PORT = "3363"
+	}
+	stages {
+		stage('Unit Tests') {
+			steps {
+				bat "LabVIEWCLI -OperationName LUnit -ProjectPath \"${WORKSPACE}\\${LV_PROJECT_PATH}\" -TestRunners ${NUM_TEST_RUNNERS} -ReportPath \"${WORKSPACE}\\lunit_reports\\lunit.xml\" -ClearIndex TRUE -PortNumber ${LV_PORT} -LogFilePath \"${WORKSPACE}\\LabVIEWCLI_LUnit.txt\" -LogToConsole true -Verbosity Default"
 
-All tests within a Test Case class may executed from the project explorer, by right-clicking on a Test Case and selecting `Run Test Case...` from the menu.
-As of LUnit version 1.5, a test VI may be executed by simply running it in LabVIEW using the run arrow.
-There is also a toolbar button added to the LabVIEW Project Explorer to run all tests in project or create a new test case.
+				junit "lunit_reports\\*.xml"
+			}
+		}
+	}
+}
+```
 
-## Documentation
+The pipeline above declares three environment variables used to configure the call to LUnit using the LabVIEW CLI.
+The first is the path to the project file relative to the workspace, *i.e.* the path relative to the root of the repository where the Jenkinsfile is located.
+The second is the number of parallel test runners to spawn, here configured to one. 
+The third parameter is the port configured for VI server in LabVIEW under Tools->Options->VI Server.
 
-Documentation is available at [https://lunit.astemes.com](https://lunit.astemes.com).
-A 15 minute demonstration and introduction to LUnit, recorded in 2024, is available [here](https://www.youtube.com/watch?v=Cxb1FUIsC04).
-A presentation introducing LUnit was given at GLA Summit 2021 and the video recording is available [here](https://www.youtube.com/watch?v=Kys_w2RNffw&t=131s).
+The report is saved in the path `lunit_reports` using the file name `lunit.xml` with incrementing index.
+After the execution of tests using the bat command the junit plugin is called to digest the report files generated.
+This requires that the Jenkins JUnit plugin is installed, which it is by using the recommended default settings when installing Jenkins.
 
-## Examples
+Note that this is a minimal example meant to demonstrate the concept. 
+It could be improved significantly to reduce the details in the Jenkinsfile using shared libraries.
+As an example, the build system used to build LUnit uses a simpler command `runLUnit "${LV_PROJECT_PATH}"` in the Jenkinsfile in stead of the rather detailed `bat` command.
 
-There are a few examples installed with LUnit and these may be found through the NI Example Finder using the keyword `LUnit`.
-The examples are installed at `C:\Program Files (x86)\National Instruments\LabVIEW 20XX\examples\Astemes\LUnit` by default.
+### * Footnote on Test Finder indexing
 
-## Is it free and open source?
-
-Yes, absolutely!
-LUnit is released by [Astemes](https://www.astemes.com) under the MIT license.
-If you find it useful, please consider starring the project on GitHub and VIPM.
-
-## Versioning
-
-LUnit uses semantic version in the format major.minor.fix.build. 
-The build version is of little significance as it only denotes the number of the build.
-The fix indicates a bug fix, minor feature, or other improvement. 
-As new major features are released or the number of minor feature releases accumulates, the minor version is incremented.
-Minor version updates are uploaded to VIPM and NI Tools Network after an initial testing period.
-These updates should be non-breaking and should not require any changes to the client code.
-A major version update would mean that code developed using an earlier version might need modification.
-There are currently no plans to make any major updates.
-
-## Support
-
-LUnit is an open source toolkit provided as is and without guarantees by [Astemes](https://www.astemes.com). If you encounter issues, use GitHub Issues to report and track the progress. If you have a suggestion for a solution, please consider making pull request. For paid-for professional support, please [contact Astemes directly](https://www.astemes.com/contact).
-
-## Contribute
-
-If you find LUnit useful, please share it with your colleagues and network to help grow the user base.
-Also, consider starring the project on VIPM or GitHub to let us know that you like it.
-If you find a bug, use the Issues section on GitHub.
-To take a more active role, please feel free to fork the project and make a pull request.
+The test finder keeps an index of all test methods for all test classes in the project.
+When the test finder is started, it loads the index and compares all classes to the index.
+If the classes has changed since the index was created, the class will be re-indexed.
+As of version 1.0, the test indexer will however not re-index a class when a parent class has added a dynamic test method.
+To detect new inherited dynamic method the test index must be re-created, which happens when the ``-ClearIndex`` flag is left at default value ``True``.
