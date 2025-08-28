@@ -1,4 +1,4 @@
-<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2024-11-18 21:01:51" Creator="Anton Sundqvist" Comments="" ID="2ee2c0c6143290cb1595ea0d08b7404f">
+<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2025-08-28 13:17:37" Creator="Anton Sundqvist" Comments="" ID="4e6f5c5419312eeae7a479fde8b224bc">
   <Library_General_Settings>
     <Package_File_Name>Astemes_lib_LUnit_CLI</Package_File_Name>
     <Library_Version>1.5.2.22</Library_Version>
@@ -32,16 +32,15 @@
       <One_Line_Description_Summary>Command Line Interface fo LUnit</One_Line_Description_Summary>
       <Description>LUnit is a LabVIEW &lt;b&gt;Unit Testing Framework&lt;/b&gt; and this package contains a command line interface using LabVIEW native command line interface. 
 
-To install it, you will need to have write permissions to the &lt;i&gt;C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI&lt;/i&gt; directory. &lt;b&gt;This typically means that VIPM needs to run as administrator.&lt;/b&gt;
+To install it, you will need to have write permissions to the &lt;i&gt;C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI&lt;/i&gt; directory. &lt;b&gt;&lt;u&gt;This typically means that VIPM needs to run as administrator.&lt;/u&gt;&lt;/b&gt;Otherwise the installation will fail silently.
 
 LUnit documentation is available on https://lunit.astemes.com.
 </Description>
       <Copyright>Copyright (c) 2020, Astemes</Copyright>
       <Packager>Anton Sundqvist</Packager>
       <URL>https://lunit.astemes.com</URL>
-      <Release_Notes>This package was split out of the main LUnit package into its own package as of version 1.4.18 o LUnit.
-
-The reason for doing this is that installing the CLI support requires write access to C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI, which is  not granted by default. For this reason. it appeared as a missing dependency and caused bad user experience.</Release_Notes>
+      <Release_Notes>Added -Path as a valid alias for -ProjectPath.
+As of LUnit 1.11, a directory is also a valid path. If a directory is provided, all tests within this directory, and sub directories, are executed. </Release_Notes>
     </Description>
     <Destinations>
       <Toolkit_VIs>
