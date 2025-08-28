@@ -22,7 +22,7 @@ The `-ClearIndex` flag may be used to override this behavior and re-use the inde
 |Argument|Description
 |---|---|
 |<nobr>`-Path`</nobr>|Specifies the path to the project, class or library containing the Test Case classes to run. If you provide a directory, all tests within this directory or sub directories will be executed|
-|<nobr>`-TestRunners`</nobr>|Specifies the number of parallel test runners to spawn. Default value is 1.|
+|<nobr>`-Parallel`</nobr>|Specifies if tests are to be run in parallell. Valid values are  ``True`` or  ``False`` (case-insensitive) |
 |<nobr>`-ReportPath`</nobr>|The output path for the report file generated. The execution generates either a .txt-file or an .xml-file, based on the path specified.|
 |<nobr>`-ClearIndex`</nobr>|Clear the index and force LUnit to rediscover all tests. Default is ``True``. The index must be cleared to find new tests inherited for a Test Case. |
 
