@@ -1,4 +1,4 @@
-<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2026-02-03 11:48:07" Creator="Anton Sundqvist" Comments="" ID="c6abcbc7e1e1836a52cb529453fa7b29">
+<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2026-02-04 12:08:28" Creator="Anton Sundqvist" Comments="" ID="0f81b01a4317f257503448570128b77a">
   <Library_General_Settings>
     <Package_File_Name>Astemes_lib_LUnit_CLI</Package_File_Name>
     <Library_Version>1.5.2.22</Library_Version>
@@ -17,7 +17,7 @@
   </Library_General_Settings>
   <Advanced_Settings>
     <Package_Dependencies>
-      <Additional_External_Dependencies>astemes_lib_lunit &gt;=1.4.18.0</Additional_External_Dependencies>
+      <Additional_External_Dependencies>astemes_lib_lunit &gt;=1.12.4.6</Additional_External_Dependencies>
     </Package_Dependencies>
     <Custom_Action_VIs>
       <Pre-Build_VI/>
