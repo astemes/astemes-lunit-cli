@@ -25,7 +25,7 @@ The `-ClearIndex` flag may be used to override this behavior and re-use the inde
 |<nobr>`-Parallel`</nobr>|Specifies if tests are to be run in parallell. Valid values are  ``True`` or  ``False`` (case-insensitive) |
 |<nobr>`-ReportPath`</nobr>|The output path for the report file generated. The execution generates either a .txt-file or an .xml-file, based on the path specified.|
 |<nobr>`-ClearIndex`</nobr>|Clear the index and force LUnit to rediscover all tests. Default is ``True``. The index must be cleared to find new tests inherited for a Test Case. |
-|<nobr>`-CustomReports`</nobr>: If there are custom report plugins installed, these can be activated by providing them as a comma separated list. If this is left empty, the default plugin will be selected based on the given file extenssion. If any of the built-in reporting formats (Text Report or XML Report) should stil be active, they should be added to the list. |
+|<nobr>`-CustomReports`</nobr>| If there are custom report plugins installed, these can be activated by providing them as a comma separated list. If this is left empty, the default plugin will be selected based on the given file extenssion. If any of the built-in reporting formats (Text Report or XML Report) should stil be active, they should be added to the list. |
 
 The LabVIEW CLI uses VI Server and by default it is configured to work on port 3363.
 You will need to make sure that the connection is not blocked by firewalls.
