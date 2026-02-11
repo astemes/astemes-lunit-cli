@@ -1,4 +1,4 @@
-<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2026-02-04 12:08:28" Creator="Anton Sundqvist" Comments="" ID="0f81b01a4317f257503448570128b77a">
+<VI_Package_Builder_Settings Version="2020.1" Created_Date="2021-03-25 19:33:33" Modified_Date="2026-02-11 08:21:53" Creator="Anton Sundqvist" Comments="" ID="ca61544229631648121bcb836ccc4d4c">
   <Library_General_Settings>
     <Package_File_Name>Astemes_lib_LUnit_CLI</Package_File_Name>
     <Library_Version>1.5.2.22</Library_Version>
@@ -39,7 +39,7 @@ LUnit documentation is available on https://lunit.astemes.com.
       <Copyright>Copyright (c) 2020, Astemes</Copyright>
       <Packager>Anton Sundqvist</Packager>
       <URL>https://lunit.astemes.com</URL>
-      <Release_Notes>Add support for specifying custom report plugins to CLI API.</Release_Notes>
+      <Release_Notes>Add support for using paths relative to current working directory for arguments.</Release_Notes>
     </Description>
     <Destinations>
       <Toolkit_VIs>
