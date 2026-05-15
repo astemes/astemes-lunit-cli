@@ -530,7 +530,6 @@
 				<Item Name="1D String Array to Delimited String.vi" Type="VI" URL="/&lt;vilib&gt;/AdvancedString/1D String Array to Delimited String.vi"/>
 				<Item Name="Delimited String to 1D String Array.vi" Type="VI" URL="/&lt;vilib&gt;/AdvancedString/Delimited String to 1D String Array.vi"/>
 				<Item Name="Test Suite.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Test Suite.lvclass"/>
-				<Item Name="LUnit Reports.lvlib" Type="Library" URL="/&lt;vilib&gt;/Astemes/LUnit/Plugins/LUnit Reports.lvlib"/>
 				<Item Name="Get LV Class Name.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Name.vi"/>
 				<Item Name="Create Directory Recursive.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Create Directory Recursive.vi"/>
 				<Item Name="System Directory Type.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/sysdir.llb/System Directory Type.ctl"/>
@@ -541,24 +540,34 @@
 				<Item Name="cfis_Get File Extension Without Changing Case.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/cfis_Get File Extension Without Changing Case.vi"/>
 				<Item Name="cfis_Split File Path Into Three Parts.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/cfis_Split File Path Into Three Parts.vi"/>
 				<Item Name="Create File with Incrementing Suffix.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Create File with Incrementing Suffix.vi"/>
-				<Item Name="LUnit Configuration Manager.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/User Interface/Configuration Manager/LUnit Configuration Manager.lvclass"/>
 				<Item Name="NI_LVConfig.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/config.llb/NI_LVConfig.lvlib"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="8.6CompatibleGlobalVar.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/8.6CompatibleGlobalVar.vi"/>
 				<Item Name="Get LV Class Default Value.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Default Value.vi"/>
-				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
 				<Item Name="Test Case.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Test Case.lvclass"/>
 				<Item Name="NI_Data Type.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/Data Type/NI_Data Type.lvlib"/>
 				<Item Name="Get LV Class Path.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Path.vi"/>
-				<Item Name="Is Class Not Interface Without Loading.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Is Class Not Interface Without Loading.vi"/>
-				<Item Name="Read Class Ancestry Without Loading.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Read Class Ancestry Without Loading.vi"/>
 				<Item Name="List Directory and LLBs.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/List Directory and LLBs.vi"/>
 				<Item Name="Recursive File List.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Recursive File List.vi"/>
-				<Item Name="LUnit Execution API.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/User Interface/Execution API/LUnit Execution API.lvclass"/>
-				<Item Name="LUnit Plugin Loader.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/User Interface/Plugin Loader/LUnit Plugin Loader.lvclass"/>
-				<Item Name="LUnit Paths.lvlib" Type="Library" URL="/&lt;vilib&gt;/Astemes/LUnit/User Interface/Support/LUnit Paths.lvlib"/>
-				<Item Name="LUnit Process.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/User Interface/Process/LUnit Process.lvclass"/>
+				<Item Name="LUnit Execution API.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Palette/API/LUnit Execution API.lvclass"/>
+				<Item Name="LUnit Parallel Test Runner.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Parallel Test Runner/LUnit Parallel Test Runner.lvclass"/>
+				<Item Name="LUnit Single Thread Test Runner.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Single Thread Test Runner/LUnit Single Thread Test Runner.lvclass"/>
+				<Item Name="LUnit XML Report.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Plugins/XML Report/LUnit XML Report.lvclass"/>
+				<Item Name="NI_XML.lvlib" Type="Library" URL="/&lt;vilib&gt;/xml/NI_XML.lvlib"/>
+				<Item Name="LUnitDiff Tool.vi" Type="VI" URL="/&lt;vilib&gt;/Astemes/LUnit/astemes-string-diff-utils/LUnitDiff Tool.vi"/>
+				<Item Name="Sort 1D Array.vim" Type="VI" URL="/&lt;vilib&gt;/Array/Sort 1D Array.vim"/>
+				<Item Name="Less Functor.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Comparison/Less/Less Functor/Less Functor.lvclass"/>
+				<Item Name="Less Comparable.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Comparison/Less/Less Comparable/Less Comparable.lvclass"/>
+				<Item Name="Sort 1D Array Core.vim" Type="VI" URL="/&lt;vilib&gt;/Array/Helpers/Sort 1D Array Core.vim"/>
+				<Item Name="Less.vim" Type="VI" URL="/&lt;vilib&gt;/Comparison/Less.vim"/>
+				<Item Name="LUnitFind Common Chars.vi" Type="VI" URL="/&lt;vilib&gt;/Astemes/LUnit/astemes-string-diff-utils/LUnitFind Common Chars.vi"/>
+				<Item Name="LUnitFind Added Sections.vi" Type="VI" URL="/&lt;vilib&gt;/Astemes/LUnit/astemes-string-diff-utils/LUnitFind Added Sections.vi"/>
+				<Item Name="LUnitFind Index to Insert at.vi" Type="VI" URL="/&lt;vilib&gt;/Astemes/LUnit/astemes-string-diff-utils/LUnitFind Index to Insert at.vi"/>
+				<Item Name="LUnit Text Report.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Plugins/Text Report/LUnit Text Report.lvclass"/>
+				<Item Name="LUnit Plugin Loader.lvlib" Type="Library" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Plugin Loader/LUnit Plugin Loader.lvlib"/>
+				<Item Name="LUnit Test Finder.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Test Finder/LUnit Test Finder.lvclass"/>
+				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
 			</Item>
 			<Item Name="Advapi32.dll" Type="Document" URL="Advapi32.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
@@ -605,7 +614,7 @@
 				<Property Name="Destination[3].path" Type="Path">../builds/LUnitCLI/National Instruments/Shared/LabVIEW CLI/Operations/LUnitCLI</Property>
 				<Property Name="DestinationCount" Type="Int">4</Property>
 				<Property Name="Source[0].Container.applyDestination" Type="Bool">true</Property>
-				<Property Name="Source[0].itemID" Type="Str">{75036119-3EB1-4D82-82D8-43A17314CD89}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{791BB44E-7D11-46E9-B0B5-666D720CCEDC}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].Container.applyInclusion" Type="Bool">true</Property>
 				<Property Name="Source[1].Container.depDestIndex" Type="Int">0</Property>

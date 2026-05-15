@@ -23,9 +23,9 @@ The `-ClearIndex` flag may be used to override this behavior and re-use the inde
 |---|---|
 |<nobr>`-Path`</nobr>|Specifies the path to the project, class or library containing the Test Case classes to run. If you provide a directory, all tests within this directory or sub directories will be executed|
 |<nobr>`-Parallel`</nobr>|Specifies if tests are to be run in parallell. Valid values are  ``True`` or  ``False`` (case-insensitive) |
-|<nobr>`-ReportPath`</nobr>|The output path for the report file generated. The execution generates either a .txt-file or an .xml-file, based on the path specified.|
+|<nobr>`-ReportPath`</nobr>|The output path for the report file generated. The execution generates either a .txt-file or an .xml-file, based on the path specified. If using multiple report formats, the path may be given as a comma separated list where the ordering of the elements in the list match the plugin order used in the `-CustomReports` argument.|
 |<nobr>`-ClearIndex`</nobr>|Clear the index and force LUnit to rediscover all tests. Default is ``True``. The index must be cleared to find new tests inherited for a Test Case. |
-|<nobr>`-CustomReports`</nobr>: If there are custom report plugins installed, these can be activated by providing them as a comma separated list. If this is left empty, the default plugin will be selected based on the given file extenssion. If any of the built-in reporting formats (Text Report or XML Report) should stil be active, they should be added to the list. |
+|<nobr>`-CustomReports`</nobr>| If there are custom report plugins installed, these can be activated by providing them as a comma separated list. If this is left empty, the default plugin will be selected based on the given file extenssion. If any of the built-in reporting formats (`Text Report` or `XML Report`) should stil be active, they should be added to the list. |
 
 The LabVIEW CLI uses VI Server and by default it is configured to work on port 3363.
 You will need to make sure that the connection is not blocked by firewalls.
@@ -52,13 +52,12 @@ pipeline {
 	agent any
 	environment{
 		LV_PROJECT_PATH = "Path to Your LabVIEW Project.lvproj"
-        NUM_TEST_RUNNERS = "1"
         LV_PORT = "3363"
 	}
 	stages {
 		stage('Unit Tests') {
 			steps {
-				bat "LabVIEWCLI -OperationName LUnit -ProjectPath \"${WORKSPACE}\\${LV_PROJECT_PATH}\" -TestRunners ${NUM_TEST_RUNNERS} -ReportPath \"${WORKSPACE}\\lunit_reports\\lunit.xml\" -ClearIndex TRUE -PortNumber ${LV_PORT} -LogFilePath \"${WORKSPACE}\\LabVIEWCLI_LUnit.txt\" -LogToConsole true -Verbosity Default"
+				bat "LabVIEWCLI -OperationName LUnit -ProjectPath \"${WORKSPACE}\\${LV_PROJECT_PATH}\" -Parallel False -ReportPath \"${WORKSPACE}\\lunit_reports\\lunit.xml\" -ClearIndex TRUE -PortNumber ${LV_PORT} -LogFilePath \"${WORKSPACE}\\LabVIEWCLI_LUnit.txt\" -LogToConsole true -Verbosity Default"
 
 				junit "lunit_reports\\*.xml"
 			}
@@ -79,6 +78,37 @@ This requires that the Jenkins JUnit plugin is installed, which it is by using t
 Note that this is a minimal example meant to demonstrate the concept. 
 It could be improved significantly to reduce the details in the Jenkinsfile using shared libraries.
 As an example, the build system used to build LUnit uses a simpler command `runLUnit "${LV_PROJECT_PATH}"` in the Jenkinsfile in stead of the rather detailed `bat` command.
+
+## GitHub Actions Example
+
+Another popular CI platform is Github Actions, which is the native CI environment for repositories hosted on GitHub.
+Below is a minimal example of how to setup the 
+
+```
+name: Unit Tests
+on:
+  push:
+jobs:
+  checkout:
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+  test:
+    needs: checkout
+    steps:
+      - run: |
+          LabVIEWCLI `
+            -OperationName LUnit `
+            -Path "<path-to-directory-containing-tests>" `
+            -Prallel False `
+            -ReportPath "<test-log-directory>\LabVIEWCLI_LUnit.xml" `
+            -ClearIndex True `
+            -CustomReports "XML Report" `
+            -Headless
+        shell: pwsh
+```
+
+Note the `-Headless` argument is supported in [LabVIEW starting version 2026Q1](https://www.ni.com/docs/en-US/bundle/labview/page/running-operations-using-the-command-line-interface-for-labview.html) and makes it possible to run tests without activating LabVIEW.
 
 ### * Footnote on Test Finder indexing
 
