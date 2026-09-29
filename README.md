@@ -10,6 +10,33 @@ The reason for this is that the CLI is installed on the system level and require
 To install the native CLI, please use [this package](https://www.vipm.io/package/astemes_lib_lunit_cli/). 
 There is also a G-CLI package, maintained by Sam at SAS Workshops, which can be found [here](https://www.vipm.io/package/sas_workshops_lib_lunit_for_g_cli/) (please note that this document does not apply the G-CLI).
 
+### Installation
+
+The package installs the LUnit operation into `<LabVIEW>/vi.lib/Astemes/LUnit CLI/LUnitCLI`.
+A post-install step then copies it into the operations directory of the LabVIEW CLI, where `LabVIEWCLI -OperationName LUnit` finds it without further arguments:
+
+|OS|LabVIEW CLI operations directory|
+|---|---|
+|Windows|`C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\Operations`|
+|Linux|`/usr/local/natinst/nilvcli/Operations`|
+|macOS|`/Library/Application Support/National Instruments/LabVIEW CLI/Operations`|
+
+Writing to this directory requires administrator privileges on Windows and root on Linux and macOS, so VIPM must be run as administrator (or root).
+VIPM closes LabVIEW before installing the package, so that LabVIEW is restarted with the same privileges as VIPM.
+Uninstalling the package removes the copy again.
+
+### Using the CLI without administrator privileges
+
+If the package is installed without the privileges needed to write to the operations directory, the installation still succeeds, but the post-install step reports a warning that the operation could not be registered with the LabVIEW CLI.
+The operation can then be used by pointing the LabVIEW CLI at the installed copy with the `-AdditionalOperationDirectory` argument:
+
+```
+LabVIEWCLI -OperationName LUnit -AdditionalOperationDirectory "<LabVIEW>/vi.lib/Astemes/LUnit CLI" -Path "<path-to-tests>" -ReportPath "<report-path>.xml"
+```
+
+where `<LabVIEW>` is the LabVIEW installation directory, for example `C:\Program Files\National Instruments\LabVIEW 2026` on Windows or `/usr/local/natinst/LabVIEW-2026-64` on Linux.
+This also works if LUnit CLI is installed into several LabVIEW versions, as each call can use the operation installed for the LabVIEW version it runs.
+
 LUnit installs a command line operation using the LabVIEW native [LabVIEWCLI by NI](https://zone.ni.com/reference/en-XX/help/371361R-01/lvhowto/cli_running_operations/).
 This operation is named LUnit and may be called using LabVIEWCLI -OperationName LUnit.
 An example illustrating the usage of the CLI i provided at `...\LabVIEW 20XX\examples\Astemes\LUnit\LUnit CLI Demo.vi`.
