@@ -439,6 +439,10 @@
 		<Item Name="Examples" Type="Folder">
 			<Item Name="CLI Demo.vi" Type="VI" URL="../Examples/CLI Demo/CLI Demo.vi"/>
 		</Item>
+		<Item Name="Install" Type="Folder">
+			<Item Name="LUnit CLI Post-Install.vi" Type="VI" URL="../Install/LUnit CLI Post-Install.vi"/>
+			<Item Name="LUnit CLI Pre-Uninstall.vi" Type="VI" URL="../Install/LUnit CLI Pre-Uninstall.vi"/>
+		</Item>
 		<Item Name="LICENSE" Type="Document" URL="../../LICENSE"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
@@ -516,8 +520,6 @@
 				<Item Name="Check if File or Folder Exists.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Check if File or Folder Exists.vi"/>
 				<Item Name="NI_FileType.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/lvfile.llb/NI_FileType.lvlib"/>
 				<Item Name="NI_PackedLibraryUtility.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/LVLibp/NI_PackedLibraryUtility.lvlib"/>
-				<Item Name="System Exec.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/system.llb/System Exec.vi"/>
-				<Item Name="Show in File System.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Show in File System.vi"/>
 				<Item Name="Open URL in Default Browser core.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser core.vi"/>
 				<Item Name="Open URL in Default Browser (string).vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser (string).vi"/>
 				<Item Name="Escape Characters for HTTP.vi" Type="VI" URL="/&lt;vilib&gt;/printing/PathToURL.llb/Escape Characters for HTTP.vi"/>
@@ -568,6 +570,8 @@
 				<Item Name="LUnit Plugin Loader.lvlib" Type="Library" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Plugin Loader/LUnit Plugin Loader.lvlib"/>
 				<Item Name="LUnit Test Finder.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Framework/Test Finder/LUnit Test Finder.lvclass"/>
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
+				<Item Name="System Exec.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/system.llb/System Exec.vi"/>
+				<Item Name="Show in File System.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Show in File System.vi"/>
 			</Item>
 			<Item Name="Advapi32.dll" Type="Document" URL="Advapi32.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
@@ -576,6 +580,9 @@
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="DOMUserDefRef.dll" Type="Document" URL="DOMUserDefRef.dll">
+				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
+			</Item>
+			<Item Name="libc.so.6" Type="Document" URL="libc.so.6">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 		</Item>
@@ -601,7 +608,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{86FCB19C-1FDD-419C-965A-93BB19BFAE86}</Property>
 				<Property Name="Bld_removeVIObj" Type="Int">1</Property>
-				<Property Name="Bld_version.build" Type="Int">36</Property>
+				<Property Name="Bld_version.build" Type="Int">42</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
 				<Property Name="Destination[0].path" Type="Path">../builds/LUnitCLI</Property>
@@ -611,8 +618,10 @@
 				<Property Name="Destination[2].path" Type="Path">../builds/LUnitCLI/examples/Astemes/NI_AB_PROJECTNAME</Property>
 				<Property Name="Destination[2].preserveHierarchy" Type="Bool">true</Property>
 				<Property Name="Destination[3].destName" Type="Str">LUnit CLI</Property>
-				<Property Name="Destination[3].path" Type="Path">../builds/LUnitCLI/National Instruments/Shared/LabVIEW CLI/Operations/LUnitCLI</Property>
-				<Property Name="DestinationCount" Type="Int">4</Property>
+				<Property Name="Destination[3].path" Type="Path">../builds/LUnitCLI/vi.lib/Astemes/LUnit CLI/LUnitCLI</Property>
+				<Property Name="Destination[4].destName" Type="Str">LUnit CLI Install Actions</Property>
+				<Property Name="Destination[4].path" Type="Path">../builds/LUnitCLI/vi.lib/Astemes/LUnit CLI</Property>
+				<Property Name="DestinationCount" Type="Int">5</Property>
 				<Property Name="Source[0].Container.applyDestination" Type="Bool">true</Property>
 				<Property Name="Source[0].itemID" Type="Str">{791BB44E-7D11-46E9-B0B5-666D720CCEDC}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
@@ -643,7 +652,14 @@
 				<Property Name="Source[5].itemID" Type="Ref">/My Computer/Examples</Property>
 				<Property Name="Source[5].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[5].type" Type="Str">Container</Property>
-				<Property Name="SourceCount" Type="Int">6</Property>
+				<Property Name="Source[6].Container.applyDestination" Type="Bool">true</Property>
+				<Property Name="Source[6].Container.applyInclusion" Type="Bool">true</Property>
+				<Property Name="Source[6].Container.depDestIndex" Type="Int">0</Property>
+				<Property Name="Source[6].destinationIndex" Type="Int">4</Property>
+				<Property Name="Source[6].itemID" Type="Ref">/My Computer/Install</Property>
+				<Property Name="Source[6].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[6].type" Type="Str">Container</Property>
+				<Property Name="SourceCount" Type="Int">7</Property>
 			</Item>
 		</Item>
 	</Item>

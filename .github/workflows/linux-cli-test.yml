@@ -1,0 +1,101 @@
+name: LUnit CLI - Linux container test
+on:
+  push:
+    branches: [linux-cli-test]
+  workflow_dispatch:
+
+env:
+  LABVIEW_IMAGE: nationalinstruments/labview:2026q1patch2-linux
+  VIP: .github/linux-test/astemes_lib_lunit_cli-1.5.2.30.vip
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Free disk space for the LabVIEW image
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pull LabVIEW Linux container
+        run: docker pull "$LABVIEW_IMAGE"
+
+      # Install once and commit the container to an image, then run each CLI test
+      # in a fresh container from it - the same shape as a CI worker image.
+      - name: Install VIPM, LUnit and the LUnit CLI package
+        id: install
+        run: |
+          set +e
+          mkdir -p ci-out
+          docker run --name lunit-install \
+            -v "${{ github.workspace }}:/workspace" \
+            "$LABVIEW_IMAGE" \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh install \
+              "/workspace/$VIP" /workspace/ci-out
+          status=$?
+          docker commit lunit-install lunit-cli-test:local
+          docker rm lunit-install
+          exit $status
+
+      # Each run gets a fresh container; continue-on-error so every variant reports.
+      - name: Mass compile the installed LUnit CLI folder
+        if: always() && steps.install.outcome != 'skipped'
+        continue-on-error: true
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/workspace" lunit-cli-test:local \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh masscompile /workspace/ci-out
+
+      - name: Run LUnit through the registered operation (absolute paths)
+        id: registered
+        if: always() && steps.install.outcome != 'skipped'
+        continue-on-error: true
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/workspace" lunit-cli-test:local \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh run-registered /workspace/ci-out
+
+      - name: Run LUnit through the registered operation (relative paths)
+        id: relative
+        if: always() && steps.install.outcome != 'skipped'
+        continue-on-error: true
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/workspace" lunit-cli-test:local \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh run-relative /workspace/ci-out
+
+      - name: Run LUnit through -AdditionalOperationDirectory (parent folder, as documented)
+        id: additional
+        if: always() && steps.install.outcome != 'skipped'
+        continue-on-error: true
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/workspace" lunit-cli-test:local \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh run-additional /workspace/ci-out
+
+      - name: Run LUnit through -AdditionalOperationDirectory (folder renamed to LUnit)
+        if: always() && steps.install.outcome != 'skipped'
+        continue-on-error: true
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/workspace" lunit-cli-test:local \
+            bash /workspace/.github/linux-test/lunit-cli-linux-test.sh run-additional-renamed /workspace/ci-out
+
+      - name: Upload logs and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lunit-cli-linux
+          path: ci-out/
+          if-no-files-found: warn
+
+      - name: Fail if the documented runs did not produce a report
+        if: always()
+        run: |
+          echo "install: ${{ steps.install.outcome }}"
+          echo "registered: ${{ steps.registered.outcome }}"
+          echo "relative: ${{ steps.relative.outcome }}"
+          echo "additional: ${{ steps.additional.outcome }}"
+          [ "${{ steps.install.outcome }}" = success ] && \
+          [ "${{ steps.registered.outcome }}" = success ] && \
+          [ "${{ steps.relative.outcome }}" = success ] && \
+          [ "${{ steps.additional.outcome }}" = success ]
