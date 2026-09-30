@@ -22,7 +22,8 @@ A post-install step then copies it into the operations directory of the LabVIEW 
 |macOS|`/Library/Application Support/National Instruments/LabVIEW CLI/Operations`|
 
 Writing to this directory requires administrator privileges on Windows and root on Linux and macOS, so VIPM must be run as administrator (or root).
-VIPM closes LabVIEW before installing the package, so that LabVIEW is restarted with the same privileges as VIPM.
+The post-install step runs inside LabVIEW, not inside VIPM.
+If LabVIEW is already running when the package is installed, VIPM uses that instance and the step runs with its privileges, so close LabVIEW before installing to let VIPM start it with administrator privileges.
 Uninstalling the package removes the copy again.
 
 ### Using the CLI without administrator privileges
@@ -36,6 +37,9 @@ LabVIEWCLI -OperationName LUnit -AdditionalOperationDirectory "<LabVIEW>/vi.lib/
 
 where `<LabVIEW>` is the LabVIEW installation directory, for example `C:\Program Files\National Instruments\LabVIEW 2026` on Windows or `/usr/local/natinst/LabVIEW-2026-64` on Linux.
 This also works if LUnit CLI is installed into several LabVIEW versions, as each call can use the operation installed for the LabVIEW version it runs.
+
+If the `-Headless` argument is used, it must be the last argument.
+The LabVIEW CLI otherwise ignores an `-AdditionalOperationDirectory` given after it and fails with error -350006, reporting that the operation cannot be found.
 
 LUnit installs a command line operation using the LabVIEW native [LabVIEWCLI by NI](https://zone.ni.com/reference/en-XX/help/371361R-01/lvhowto/cli_running_operations/).
 This operation is named LUnit and may be called using LabVIEWCLI -OperationName LUnit.
@@ -57,6 +61,25 @@ The `-ClearIndex` flag may be used to override this behavior and re-use the inde
 The LabVIEW CLI uses VI Server and by default it is configured to work on port 3363.
 You will need to make sure that the connection is not blocked by firewalls.
 As of version 1.6 of LUnit CLI, paths can be given as either relative or absolute.
+Relative paths are resolved against the working directory of LabVIEW, which is the directory `LabVIEWCLI` was called from when the LabVIEW CLI launches LabVIEW.
+If LabVIEW is already running when `LabVIEWCLI` is called, relative paths are resolved against the directory LabVIEW was started from, so use absolute paths in that case.
+
+## Running on Linux and in Containers
+
+LUnit CLI runs on Linux, including the official [NI LabVIEW Linux container](https://hub.docker.com/r/nationalinstruments/labview).
+Install VIPM, LUnit and the LUnit CLI package as root while a headless LabVIEW is running, so that the post-install step can register the operation in `/usr/local/natinst/nilvcli/Operations`.
+Then run the tests in a fresh container, with `-Headless` as the last argument:
+
+```
+LabVIEWCLI -OperationName LUnit \
+  -LabVIEWPath /usr/local/natinst/LabVIEW-2026-64/labviewprofull \
+  -Path "/workspace/<path-to-tests>" \
+  -ReportPath "/workspace/lunit_reports/lunit.xml" \
+  -LogToConsole TRUE \
+  -Headless
+```
+
+Installing the packages in one container, committing it to an image and running each test run in a new container from that image avoids connection errors (-350000) between the LabVIEW CLI and a LabVIEW instance that was started by VIPM.
 
 ## Capturing the Test Results
 
@@ -127,7 +150,7 @@ jobs:
           LabVIEWCLI `
             -OperationName LUnit `
             -Path "<path-to-directory-containing-tests>" `
-            -Prallel False `
+            -Parallel False `
             -ReportPath "<test-log-directory>\LabVIEWCLI_LUnit.xml" `
             -ClearIndex True `
             -CustomReports "XML Report" `
